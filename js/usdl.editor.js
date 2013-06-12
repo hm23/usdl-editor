@@ -355,8 +355,65 @@ function dirname(loc) {
                                                 }
 		                     }
                                      $.ajax(options)
-			         }
-                               })
+			     } else {
+                      var files= dt.files;
+                      var reader= new FileReader();
+                      reader.onload= function (event) {
+                          var content= event.target.result;
+                          var kb= $.rdf();
+                          var parsed= new DOMParser().parseFromString(content, "text/xml");   
+                          var title= parsed.getElementsByTagName("service")[0].getAttribute("name");
+                          var now= Date.now().toISOString();
+                          kb.load('@prefix dcterms: <http://purl.org/dc/terms/> .\
+                              @prefix foaf: <http://xmlns.com/foaf/0.1/> .\
+                              @prefix usdl: <http://www.linked-usdl.org/ns/usdl-core#> .\
+                              @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\
+                              <> a usdl:ServiceDescription;\
+                              dcterms:title "' + title + '"@en ;\
+                              dcterms:description "(Service description imported from SLM model.)"@en;\
+                              dcterms:modified "' + now + '"^^xsd:datetime;\
+                              dcterms:created "' + now + '"^^xsd:datetime;\
+                              dcterms:creator [ a foaf:Person;\
+                              foaf:name ""\
+                        			] .');
+                                                     
+                          kb.prefix('foaf', 'http://xmlns.com/foaf/0.1/')
+                            .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+                            .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
+                            .prefix('msm', 'http://cms-wg.sti2.org/ns/minimal-service-model#')
+                            .prefix('owl', 'http://www.w3.org/2002/07/owl#')
+                            .prefix('dcterms', 'http://purl.org/dc/terms/')
+                            .prefix('usdl', 'http://www.linked-usdl.org/ns/usdl-core#')
+                            .prefix('legal', 'http://www.linked-usdl.org/ns/usdl-legal#')
+                            .prefix('price', 'http://www.linked-usdl.org/ns/usdl-pricing#')
+                            .prefix('sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
+                            .prefix('sec', 'http://www.linked-usdl.org/ns/usdl-sec#')
+                            .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
+                            .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
+                            .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
+                            .prefix('ctag', 'http://commontag.org/ns#')
+                            .prefix('org', 'http://www.w3.org/ns/org#')
+                            .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
+                            .prefix('time', 'http://www.w3.org/2006/time#')
+                            .prefix('gr', 'http://purl.org/goodrelations/v1#')
+                            .prefix('doap', 'http://usefulinc.com/ns/doap#');
+                									   
+                          document.kb = kb;
+                          $sa.store.registerModification('About');
+                          params.subject= null;
+                          var elems= $("#columnStory .snippetFrame");
+                          if (elems.length > 0)
+                              elems.hide("drop",{direction: "down"}, 500,
+                                    function () {
+                                        $(this).remove()
+                                    });
+                          $.jGrowl("File "+files[0].name+" loaded.",  {closer: false})
+                      }
+                      reader.readAsText(files[0]);
+					 
+	             }
+
+    })
     show(params.activeTab, params.subject)
     document.running = true
 })
