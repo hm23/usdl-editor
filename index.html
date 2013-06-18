@@ -35,6 +35,7 @@ xsd: http://www.w3.org/2001/XMLSchema#"
 <script type="text/javascript" src="js/jquery.livequery.js"></script>        
 <script type="text/javascript" src="js/jquery.editable-1.3.3.js"></script>
 <script type="text/javascript" src="js/usdl.editor.ext.js"></script>        
+<script type="text/javascript" src="js/usdl.editor.msee.js"></script>        
 <script type="text/javascript" src="js/jquery.clicknscroll.v1.0.js"></script>
 <script type="text/javascript" src="js/jquery.sa.js"></script>
 <script type="text/javascript" src="js/jquery.cookie.js"></script>
@@ -266,8 +267,6 @@ data-query="?o sec:isRealisedByTechnology ?stc. ?stc rdfs:label ?st">
 </span>
 <h2>Technology Properties</h2>
 <span><span class="transclude" data-snippet="ListTechnologyProperties" data-show="literal" data-view></span></span>
-</div>
-</div>
 </span>
 </div>
 </div>
@@ -404,7 +403,6 @@ data-base="desc"></td>
 </div>
 </div>
 </div>
-
 
 <div class="snippet" typeof="snippet:Snippet" id="Service">
 <h1 class="snippet_title" property="dcterms:title">General Description</h1>
@@ -558,7 +556,6 @@ data-link-target="Artefact">Add artefact ... </td>
 </div>
 </div>
 
-
 <div class="snippet" typeof="snippet:Snippet" id="Providers">
 <h1 class="snippet_title" property="dcterms:title">Providers</h1>
 <div class="snippet_body" property="snippet:body">
@@ -616,7 +613,6 @@ data-show="literal" data-property="dcterms:description"></div></td>
 </div>
 </div>
 </div>
-
 
 <div class="snippet" typeof="snippet:Snippet" id="Provider">
 <h1 class="snippet_title" property="dcterms:title">Provider</h1>
@@ -822,7 +818,7 @@ data-link-target="Interaction">Add interaction ... </td>
 </div>
 </div>
 </div>
-
+</div>
 
 <div class="snippet" typeof="snippet:Snippet" id="Interaction">
 <h1 class="snippet_title" property="dcterms:title">Interaction</h1>
@@ -986,7 +982,6 @@ data-link-target="ServiceLevelProfileElement">Add service level profile ... </td
 </div>
 </div>
 </div>
-
 
 <div class="snippet" typeof="snippet:Snippet" id="ServiceLevelProfileElement">
 <h1 class="snippet_title" property="dcterms:title">Service Level Profile</h1>
@@ -1238,7 +1233,6 @@ data-link-target="SecurityProfileElement">Add security profile ... </td>
 </div>
 </div>
 
-
 <div class="snippet" typeof="snippet:Snippet" id="SecurityProfileElement">
 <h1 class="snippet_title" property="dcterms:title">Security Profile</h1>
 <div class="snippet_body" property="snippet:body">
@@ -1383,8 +1377,6 @@ data-content="unit" data-view data-property="gr:hasUnitOfMeasurement"></td>
 </div>
 </div>
 
-
-
 <div class="snippet" typeof="snippet:Snippet" id="Legal">
 <h1 class="snippet_title" property="dcterms:title">Legal</h1>
 <div class="snippet_body" property="snippet:body">
@@ -1500,7 +1492,6 @@ data-link-target="ServiceOffering">Add offering ... </td>
 </div>
 </div>
 </div>
-
 
 <div class="snippet" typeof="snippet:Snippet" id="ServiceOffering">
 <h1 class="snippet_title" property="dcterms:title">Service Offering</h1>
@@ -1792,6 +1783,7 @@ data-content="unit" data-view data-property="gr:hasUnitOfMeasurement"></td>
 </div>
 </div>
 </div>
+</div>
 
 <div class="snippet" typeof="snippet:Snippet" id="Publish">
 <h1 class="snippet_title" property="dcterms:title">Publish</h1>
@@ -1817,7 +1809,7 @@ data-name="publish"
 data-parameter="mobile">Publish to Mobile App Store</button></center></td>
 </tr>
 <tr>
-<td class="valueCol top"><img class="command ui-button ui-widget ui-corner-all" src="images/rdf_w3c_icon.48.gif" role="button" data-name="rdf" data-format="rdf">&nbsp;<img class="command ui-button ui-widget ui-corner-all" src="images/turtle_icon_32x35.jpg" role="button" data-name="rdf" data-format="ttl">&nbsp;<img class="command ui-button ui-widget ui-corner-all" src="images/rdf_json_w3c_icon.48.gif" height="35" role="button" data-name="rdf" data-format="json"</td>
+<td class="valueCol top"><img class="command ui-button ui-widget ui-corner-all" src="images/rdf_w3c_icon.48.gif" role="button" data-name="rdf" data-format="rdf">&nbsp;<img class="command ui-button ui-widget ui-corner-all" src="images/turtle_icon_32x35.jpg" role="button" data-name="rdf" data-format="ttl">&nbsp;<img class="command ui-button ui-widget ui-corner-all" src="images/rdf_json_w3c_icon.48.gif" height="35" role="button" data-name="rdf" data-format="json"></td>
 </tr>
 </table>
 </div>
@@ -2014,6 +2006,7 @@ dcterms:description ""@en;
 sla:obligatedParty usdl:Provider.
 </script>
 </div>
+
 <div class="snippet" typeof="snippet:Snippet" id="securitymeasure.n3">
 <h1 class="snippet_title" property="dcterms:title">securitymeasure.n3</h1>
 <script class="snippet_body" property="snippet:body" type="text/n3">
@@ -2038,7 +2031,6 @@ rdfs:label "AES"];
 sec:hasSecurityRealizationType sec-tax:InStorageType.           
 </script>
 </div>
-
 
 <div class="snippet" typeof="snippet:Snippet" id="securitygoal.n3">
 <h1 class="snippet_title" property="dcterms:title">securitygoal.n3</h1>
@@ -2067,8 +2059,6 @@ skos:inScheme sec:securityMechanismsTaxonomy ;
 rdfs:label "Cryptography"].
 </script>
 </div>
-
-
 
 <div class="snippet" typeof="snippet:Snippet" id="variable.n3">
 <h1 class="snippet_title" property="dcterms:title">variable.n3</h1>
@@ -2178,7 +2168,6 @@ dcterms:title ""@en;
 dcterms:description ""@en.
 </script>
 </div>
-
 
 <div class="snippet" typeof="snippet:Snippet" id="clause.n3">
 <h1 class="snippet_title" property="dcterms:title">clause.n3</h1>
@@ -2496,7 +2485,6 @@ vcard:postal-code "";
 vcard:country-name "" ] .
 </script>
 </div>
-
 
 <div class="snippet" typeof="snippet:Snippet" id="servicelevelprofile.n3">
 <h1 class="snippet_title" property="dcterms:title">servicelevelprofile.n3</h1>

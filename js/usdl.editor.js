@@ -9,13 +9,13 @@ $(function() {
 
     $sa.store.loadContent()
 
-    show = function (val, subj) {
-        if (subj) {
-           var query = document.kb.where(encodeSubject(subj)+' ?pred ?obj')
-           if (query.length > 0) {
-              $sa(val).navigate({param: subj})
-           } else
-	      $sa(val).navigate()
+	show = function (val, subj) {
+    	if (subj) {
+    		var query = document.kb.where(encodeSubject(subj)+' ?pred ?obj')
+    		if (query.length > 0) {
+    			$sa(val).navigate({param: subj})
+    		} else
+    			$sa(val).navigate()
         } /* else
 	    $sa(val).navigate() */
 }
@@ -136,35 +136,30 @@ function dirname(loc) {
     $sa("core.templates.page.default").render()
     $('#application').addClass('chrome')
     $('#tabs').livequery(function () {
-                           var fc = $(this).find('li a[data-target='+params.activeTab+']').parent()
-	                   var left = fc.position().left
-	                   var width = fc.width()
-                           $("#tabs .sapUiUx3NavBarArrow").animate({left: fc.position().left
-                                                                          + fc.width()/2}, 500)
-                           $('#tabs li a').removeClass('sapUiUx3NavBarItemSel')
-                           fc.children().addClass('sapUiUx3NavBarItemSel')
-                           $('li', this).click(function (event) {
-                                                 var snippet = $(event.target).attr("data-target")
-                                                 var subj = $(event.target).attr("data-subject")
-                                                 if (snippet != params.activeTab)
-                                                    params.activeTab = snippet
-                                                 $('#tabs li a').removeClass('sapUiUx3NavBarItemSel')
-                                                 $(event.target).addClass('sapUiUx3NavBarItemSel')
-                                                 $("#tabs .sapUiUx3NavBarArrow")
-				                       .animate({left: $(this).position().left
-                                                                       + $(this).width()/2},
-                                                                500)
-                                                 var elems = $("#columnStory .snippetFrame")
-                                                 if (elems.length > 0)
-                                                    elems.hide("drop",{direction: "down"}, 500,
-                                                               function () {
-                                                                  $(this).remove()
-                                                                  show(snippet,(subj)?subj:params.subject)
-                                                               })
-                                                 else
-                                                    show(snippet, (subj)?subj:params.subj)
-                                               })
-                         })
+    	var fc = $(this).find('li a[data-target='+params.activeTab+']').parent();
+    	var left = fc.position().left;
+    	var width = fc.width();
+		$("#tabs .sapUiUx3NavBarArrow").animate({left: fc.position().left + fc.width()/2}, 500);
+		$('#tabs li a').removeClass('sapUiUx3NavBarItemSel');
+		fc.children().addClass('sapUiUx3NavBarItemSel');
+		$('li', this).click(function (event) {
+			var snippet = $(event.target).attr("data-target");
+			var subj = $(event.target).attr("data-subject");
+			if (snippet != params.activeTab)
+				params.activeTab = snippet;
+			$('#tabs li a').removeClass('sapUiUx3NavBarItemSel');
+			$(event.target).addClass('sapUiUx3NavBarItemSel');
+			$("#tabs .sapUiUx3NavBarArrow").animate({left: $(this).position().left + $(this).width()/2}, 500);
+			var elems = $("#columnStory .snippetFrame");
+			if (elems.length > 0)
+				elems.hide("drop",{direction: "down"}, 500, function () {
+					$(this).remove();
+					show(snippet,(subj)?subj:params.subject);
+					});
+			else
+            	show(snippet, (subj)?subj:params.subj);
+		});
+	});
     $(".snippetContent").slidedeck({slideClass: "snippetFrame", deckOffset: 60})
     $('.snippet_content').livequery(function () { $(this).clickNScroll()})
 
@@ -229,191 +224,163 @@ function dirname(loc) {
                                  return false
                                })
                   .bind("drop",
-                               function (e) {
-                                 e.preventDefault();
-				 var dt = e.originalEvent.dataTransfer
-			         var types = dt.types
-			         if ($.inArray("application/x-moz-file", types) != -1) {
-                                   var files = dt.files
-                                   var reader = new FileReader();
-                                   reader.onload = function (event) {
-                                     var content = event.target.result
-                                     var kb = $.rdf()
-                                     kb.load(content)
-                                     
-                                     kb.prefix('foaf', 'http://xmlns.com/foaf/0.1/')
-                                       .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
-                                       .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
-                                       .prefix('msm', 'http://cms-wg.sti2.org/ns/minimal-service-model#')
-                                       .prefix('owl', 'http://www.w3.org/2002/07/owl#')
-                                       .prefix('dcterms', 'http://purl.org/dc/terms/')
-                                       .prefix('usdl', 'http://www.linked-usdl.org/ns/usdl-core#')
-                                       .prefix('legal', 'http://www.linked-usdl.org/ns/usdl-legal#')
-                                       .prefix('price', 'http://www.linked-usdl.org/ns/usdl-pricing#')
-                                       .prefix('sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
-                                       .prefix('sec', 'http://www.linked-usdl.org/ns/usdl-sec#')
-                                       .prefix('sec-tax', 'http://www.linked-usdl.org/ns/usdl-sec-taxonomy#')
-                                       .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
-                                       .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
-                                       .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
-                                       .prefix('ctag', 'http://commontag.org/ns#')
-                                       .prefix('org', 'http://www.w3.org/ns/org#')
-                                       .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
-                                       .prefix('time', 'http://www.w3.org/2006/time#')
-                                       .prefix('gr', 'http://purl.org/goodrelations/v1#')
-                                       .prefix('doap', 'http://usefulinc.com/ns/doap#')
-                                       .base(findBase(kb))
+                              function (e) {
+                              	e.preventDefault();
+								var dt = e.originalEvent.dataTransfer;
+								var length = dt.items.length;
+								var types = dt.types;
+								for (var i = 0; i < length; i++) {
+									var entry = dt.items[i].webkitGetAsEntry();
+									if (entry.isFile) {				 
+										if ($.inArray("application/x-moz-file", types) != -1) {
+											var files = dt.files;
+											var reader = new FileReader();
+											reader.onload = function (event) {
+												var content = event.target.result;
+												var kb = $.rdf();
+												kb.load(content);
 
-                                     document.kb = kb
-                                     $sa.store.registerModification('About')
-				     params.subject = null
-                                     var elems = $("#columnStory .snippetFrame")
-                                     if (elems.length > 0)
-                                        elems.hide("drop",{direction: "down"}, 500,
-                                                   function () {
-                                                      $(this).remove()
-                                                   })
-                                     $.jGrowl("File "+files[0].name+" loaded.",  {closer: false})
-                                   }
-                                   reader.readAsText(files[0]);
-                                   return false
-				 } else if ($.inArray("text/x-moz-url", types) != -1) {
-				     var uri= dt.getData('text/x-moz-url').split('\n')[0]
-                                     var kb = $.rdf()
-                                     kb.prefix('foaf', 'http://xmlns.com/foaf/0.1/')
-                                       .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
-                                       .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
-                                       .prefix('msm', 'http://cms-wg.sti2.org/ns/minimal-service-model#')
-                                       .prefix('owl', 'http://www.w3.org/2002/07/owl#')
-                                       .prefix('dcterms', 'http://purl.org/dc/terms/')
-                                       .prefix('usdl', 'http://www.linked-usdl.org/ns/usdl-core#')
-                                       .prefix('legal', 'http://www.linked-usdl.org/ns/usdl-legal#')
-                                       .prefix('price', 'http://www.linked-usdl.org/ns/usdl-pricing#')
-                                       .prefix('sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
-                                       .prefix('sec', 'http://www.linked-usdl.org/ns/usdl-sec#')
-                                       .prefix('sec-tax', 'http://www.linked-usdl.org/ns/usdl-sec-taxonomy#')
-                                       .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
-                                       .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
-                                       .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
-                                       .prefix('ctag', 'http://commontag.org/ns#')
-                                       .prefix('org', 'http://www.w3.org/ns/org#')
-                                       .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
-                                       .prefix('time', 'http://www.w3.org/2006/time#')
-                                       .prefix('gr', 'http://purl.org/goodrelations/v1#')
-                                       .prefix('doap', 'http://usefulinc.com/ns/doap#')
-                                       .base(findBase(kb))
-		                     var options = {
-                                         type: 'GET',
-                                         url: uri,
-                                         success: function (data) {
-                                                    kb.load(data)
-                                                    document.kb = kb
-                                                    $sa.store.registerModification('About')
-                                                    $.jGrowl('description loaded.')
-                                                 },
-                                         error: function(xhr, textStatus, err) {
-                                                    $.jGrowl('Error loading description.')
-                                                }
-		                     }
-                                     $.ajax(options)
-				 } else if ($.inArray("text/uri-list", types) != -1) {
-				     var uri = dt.getData('text/uri-list').split('\n')[0]
-                                     var kb = $.rdf()
-                                     kb.prefix('foaf', 'http://xmlns.com/foaf/0.1/')
-                                       .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
-                                       .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
-                                       .prefix('msm', 'http://cms-wg.sti2.org/ns/minimal-service-model#')
-                                       .prefix('owl', 'http://www.w3.org/2002/07/owl#')
-                                       .prefix('dcterms', 'http://purl.org/dc/terms/')
-                                       .prefix('usdl', 'http://www.linked-usdl.org/ns/usdl-core#')
-                                       .prefix('legal', 'http://www.linked-usdl.org/ns/usdl-legal#')
-                                       .prefix('price', 'http://www.linked-usdl.org/ns/usdl-pricing#')
-                                       .prefix('sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
-                                       .prefix('sec', 'http://www.linked-usdl.org/ns/usdl-sec#')
-                                       .prefix('sec-tax', 'http://www.linked-usdl.org/ns/usdl-sec-taxonomy#')
-                                       .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
-                                       .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
-                                       .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
-                                       .prefix('ctag', 'http://commontag.org/ns#')
-                                       .prefix('org', 'http://www.w3.org/ns/org#')
-                                       .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
-                                       .prefix('time', 'http://www.w3.org/2006/time#')
-                                       .prefix('gr', 'http://purl.org/goodrelations/v1#')
-                                       .prefix('doap', 'http://usefulinc.com/ns/doap#')
-                                       .base(findBase(kb))
-		                     var options = {
-                                         type: 'GET',
-                                         url: uri,
-                                         success: function (data) {
-                                                    kb.load(data)
-                                                    document.kb = kb
-                                                    $sa.store.registerModification('About')
-                                                    $.jGrowl('description loaded.')
-                                                 },
-                                         error: function(xhr, textStatus, err) {
-                                                    $.jGrowl('Error loading description.')
-                                                }
-		                     }
-                                     $.ajax(options)
-			     } else {
-                      var files= dt.files;
-                      var reader= new FileReader();
-                      reader.onload= function (event) {
-                          var content= event.target.result;
-                          var kb= $.rdf();
-                          var parsed= new DOMParser().parseFromString(content, "text/xml");   
-                          var title= parsed.getElementsByTagName("service")[0].getAttribute("name");
-                          var now= Date.now().toISOString();
-                          kb.load('@prefix dcterms: <http://purl.org/dc/terms/> .\
-                              @prefix foaf: <http://xmlns.com/foaf/0.1/> .\
-                              @prefix usdl: <http://www.linked-usdl.org/ns/usdl-core#> .\
-                              @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\
-                              <> a usdl:ServiceDescription;\
-                              dcterms:title "' + title + '"@en ;\
-                              dcterms:description "(Service description imported from SLM model.)"@en;\
-                              dcterms:modified "' + now + '"^^xsd:datetime;\
-                              dcterms:created "' + now + '"^^xsd:datetime;\
-                              dcterms:creator [ a foaf:Person;\
-                              foaf:name ""\
-                        			] .');
-                                                     
-                          kb.prefix('foaf', 'http://xmlns.com/foaf/0.1/')
-                            .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
-                            .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
-                            .prefix('msm', 'http://cms-wg.sti2.org/ns/minimal-service-model#')
-                            .prefix('owl', 'http://www.w3.org/2002/07/owl#')
-                            .prefix('dcterms', 'http://purl.org/dc/terms/')
-                            .prefix('usdl', 'http://www.linked-usdl.org/ns/usdl-core#')
-                            .prefix('legal', 'http://www.linked-usdl.org/ns/usdl-legal#')
-                            .prefix('price', 'http://www.linked-usdl.org/ns/usdl-pricing#')
-                            .prefix('sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
-                            .prefix('sec', 'http://www.linked-usdl.org/ns/usdl-sec#')
-                            .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
-                            .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
-                            .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
-                            .prefix('ctag', 'http://commontag.org/ns#')
-                            .prefix('org', 'http://www.w3.org/ns/org#')
-                            .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
-                            .prefix('time', 'http://www.w3.org/2006/time#')
-                            .prefix('gr', 'http://purl.org/goodrelations/v1#')
-                            .prefix('doap', 'http://usefulinc.com/ns/doap#');
-                									   
-                          document.kb = kb;
-                          $sa.store.registerModification('About');
-                          params.subject= null;
-                          var elems= $("#columnStory .snippetFrame");
-                          if (elems.length > 0)
-                              elems.hide("drop",{direction: "down"}, 500,
-                                    function () {
-                                        $(this).remove()
-                                    });
-                          $.jGrowl("File "+files[0].name+" loaded.",  {closer: false})
-                      }
-                      reader.readAsText(files[0]);
-					 
-	             }
+												kb.prefix('foaf', 'http://xmlns.com/foaf/0.1/')
+												  .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+												  .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
+												  .prefix('msm', 'http://cms-wg.sti2.org/ns/minimal-service-model#')
+												  .prefix('owl', 'http://www.w3.org/2002/07/owl#')
+												  .prefix('dcterms', 'http://purl.org/dc/terms/')
+												  .prefix('usdl', 'http://www.linked-usdl.org/ns/usdl-core#')
+												  .prefix('legal', 'http://www.linked-usdl.org/ns/usdl-legal#')
+												  .prefix('price', 'http://www.linked-usdl.org/ns/usdl-pricing#')
+												  .prefix('sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
+												  .prefix('sec', 'http://www.linked-usdl.org/ns/usdl-sec#')
+												  .prefix('sec-tax', 'http://www.linked-usdl.org/ns/usdl-sec-taxonomy#')
+												  .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
+												  .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
+												  .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
+												  .prefix('ctag', 'http://commontag.org/ns#')
+												  .prefix('org', 'http://www.w3.org/ns/org#')
+												  .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
+												  .prefix('time', 'http://www.w3.org/2006/time#')
+												  .prefix('gr', 'http://purl.org/goodrelations/v1#')
+												  .prefix('doap', 'http://usefulinc.com/ns/doap#')
+												  .base(findBase(kb));
 
-    })
-    show(params.activeTab, params.subject)
-    document.running = true
+												document.kb = kb;
+												$sa.store.registerModification('About');
+												params.subject = null;
+												var elems = $("#columnStory .snippetFrame");
+												if (elems.length > 0)
+													elems.hide("drop",{direction: "down"}, 500,
+															function () {
+																$(this).remove();
+															});
+												$.jGrowl("File "+files[0].name+" loaded.",  {closer: false});
+											};
+											reader.readAsText(files[0]);
+											return false;
+										} else if ($.inArray("text/x-moz-url", types) != -1) {
+											var uri= dt.getData('text/x-moz-url').split('\n')[0];
+											var kb = $.rdf();
+											kb.prefix('foaf', 'http://xmlns.com/foaf/0.1/')
+											  .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+											  .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
+											  .prefix('msm', 'http://cms-wg.sti2.org/ns/minimal-service-model#')
+											  .prefix('owl', 'http://www.w3.org/2002/07/owl#')
+											  .prefix('dcterms', 'http://purl.org/dc/terms/')
+											  .prefix('usdl', 'http://www.linked-usdl.org/ns/usdl-core#')
+											  .prefix('legal', 'http://www.linked-usdl.org/ns/usdl-legal#')
+											  .prefix('price', 'http://www.linked-usdl.org/ns/usdl-pricing#')
+											  .prefix('sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
+											  .prefix('sec', 'http://www.linked-usdl.org/ns/usdl-sec#')
+											  .prefix('sec-tax', 'http://www.linked-usdl.org/ns/usdl-sec-taxonomy#')
+											  .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
+											  .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
+											  .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
+											  .prefix('ctag', 'http://commontag.org/ns#')
+											  .prefix('org', 'http://www.w3.org/ns/org#')
+											  .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
+											  .prefix('time', 'http://www.w3.org/2006/time#')
+											  .prefix('gr', 'http://purl.org/goodrelations/v1#')
+											  .prefix('doap', 'http://usefulinc.com/ns/doap#')
+											  .base(findBase(kb));
+											var options = {
+													type: 'GET',
+													url: uri,
+													success: function (data) {
+														kb.load(data);
+														document.kb = kb;
+														$sa.store.registerModification('About');
+														$.jGrowl('description loaded.');
+													},
+													error: function(xhr, textStatus, err) {
+														$.jGrowl('Error loading description.');
+													}
+											};
+											$.ajax(options);
+										} else if ($.inArray("text/uri-list", types) != -1) {
+											var uri = dt.getData('text/uri-list').split('\n')[0];
+											var kb = $.rdf();
+											kb.prefix('foaf', 'http://xmlns.com/foaf/0.1/')
+											  .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+											  .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
+											  .prefix('msm', 'http://cms-wg.sti2.org/ns/minimal-service-model#')
+											  .prefix('owl', 'http://www.w3.org/2002/07/owl#')
+											  .prefix('dcterms', 'http://purl.org/dc/terms/')
+											  .prefix('usdl', 'http://www.linked-usdl.org/ns/usdl-core#')
+											  .prefix('legal', 'http://www.linked-usdl.org/ns/usdl-legal#')
+											  .prefix('price', 'http://www.linked-usdl.org/ns/usdl-pricing#')
+											  .prefix('sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
+											  .prefix('sec', 'http://www.linked-usdl.org/ns/usdl-sec#')
+											  .prefix('sec-tax', 'http://www.linked-usdl.org/ns/usdl-sec-taxonomy#')
+											  .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
+											  .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
+											  .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
+											  .prefix('ctag', 'http://commontag.org/ns#')
+											  .prefix('org', 'http://www.w3.org/ns/org#')
+											  .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
+											  .prefix('time', 'http://www.w3.org/2006/time#')
+											  .prefix('gr', 'http://purl.org/goodrelations/v1#')
+											  .prefix('doap', 'http://usefulinc.com/ns/doap#')
+											  .base(findBase(kb));
+											var options = {
+													type: 'GET',
+													url: uri,
+													success: function (data) {
+														kb.load(data);
+														document.kb = kb;
+														$sa.store.registerModification('About');
+														$.jGrowl('description loaded.');
+													},
+													error: function(xhr, textStatus, err) {
+														$.jGrowl('Error loading description.');
+													}
+											};
+											$.ajax(options);
+										} else if (entry.name.split('.').pop() == "bsm") {
+											var reader= new FileReader();
+											reader.onload= function (event) {
+												var slmName = 'MSEE BSM model ' + entry.name;
+												initSlmDescription(slmName, $.rdf());
+												importBsmModel(event.target.result);
+												hideSnippets();
+												$.jGrowl(slmName+" loaded.",  {closer: false});
+											};
+											reader.readAsText(dt.items[i].getAsFile());
+										}
+									} else if (entry.isDirectory) {
+
+									}
+								}
+
+                  });
+                  show(params.activeTab, params.subject)
+                  document.running = true
 })
+
+function hideSnippets(){
+	params.subject= null;
+	var elems= $("#columnStory .snippetFrame");
+	if (elems.length > 0)
+		elems.hide("drop",{direction: "down"}, 500,
+				function () {
+					$(this).remove();
+				});
+}
